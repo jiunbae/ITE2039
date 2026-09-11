@@ -1,8 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ITE2039 알고리즘</title>
+<meta name="description" content="ITE2039 알고리즘 코드 감사 보고서 — 근거 기반 평가와 등급">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
+
 :root{
   --ground:#F3F4F1; --surface:#FCFCFA; --surface-2:#EDEFEA;
   --ink:#1A211C; --ink-soft:#5F6862; --ink-faint:#8A938C;
@@ -146,8 +153,108 @@ footer p + p{margin-top:6px}
   .grade{transform:none}
   .masthead{padding-block:30px 18px}
 }
-</style>
 
+/* ---------- index-only components ---------- */
+.thesis{font-family:var(--f-display); font-size:clamp(19px,2.9vw,24px); line-height:1.45; max-width:34ch}
+.dist{display:flex; height:34px; border-radius:3px; overflow:hidden; border:1px solid var(--rule); margin-top:10px}
+.dist span{display:flex; align-items:center; justify-content:center; overflow:hidden; white-space:nowrap; font-family:var(--f-mono); font-size:11px; font-weight:600; color:var(--surface)}
+@media (max-width:560px){ .dist span{font-size:0} .dist{height:22px} }
+.dist .d-hi{background:var(--good)} .dist .d-mid{background:var(--warn)} .dist .d-lo{background:var(--mark)} .dist .d-na{background:var(--ink-faint)}
+.legend{display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:10px; font-size:13px; color:var(--ink-soft)}
+.legend i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:baseline}
+.yr{font-family:var(--f-mono); font-size:11px; font-weight:600; letter-spacing:.16em; color:var(--ink-faint); text-transform:uppercase;
+    padding-top:22px; margin-top:8px; border-top:1px solid var(--rule)}
+.yr:first-of-type{border-top:0; padding-top:0}
+.row{display:grid; grid-template-columns:auto 1fr auto; gap:4px 16px; align-items:baseline;
+     padding:14px 0; border-bottom:1px solid var(--rule-soft)}
+.row:last-child{border-bottom:0}
+.row .rc{font-family:var(--f-mono); font-size:12px; font-weight:600; color:var(--accent); letter-spacing:.06em; white-space:nowrap}
+.row .rn{font-family:var(--f-display); font-size:18px; font-weight:600}
+.row .rg{font-family:var(--f-display); font-size:20px; font-weight:600; white-space:nowrap; justify-self:end}
+.row .rv{grid-column:2/4; color:var(--ink-soft); font-size:14.5px; max-width:68ch}
+.row a{text-decoration:none}
+.row a:hover .rn{text-decoration:underline}
+@media (max-width:560px){
+  .row{grid-template-columns:1fr auto}
+  .row .rc{grid-column:1/3}
+  .row .rv{grid-column:1/3}
+}
+.two{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin-top:22px}
+.act{background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--mark); border-radius:3px; padding:16px 18px; box-shadow:var(--shadow)}
+.act h4{font-size:16px; margin-bottom:6px}
+.act p{font-size:14px; color:var(--ink-soft)}
+.act.ok{border-left-color:var(--good)}
+
+
+/* ---------- prompt disclosure ---------- */
+details.prompt{margin-top:22px; border:1px solid var(--rule); border-radius:3px; background:var(--surface)}
+details.prompt > summary{cursor:pointer; padding:11px 16px; font-family:var(--f-mono); font-size:11.5px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); list-style:none}
+details.prompt > summary::-webkit-details-marker{display:none}
+details.prompt > summary::before{content:"▸ "; color:var(--accent)}
+details.prompt[open] > summary::before{content:"▾ "}
+details.prompt > summary:hover{color:var(--accent)}
+.prompt-body{padding:0 16px 16px; border-top:1px solid var(--rule-soft)}
+.prompt-body p{font-size:13.5px; color:var(--ink-soft); margin:12px 0 0}
+.prompt-body pre{white-space:pre-wrap; word-break:break-word; font-size:12px; line-height:1.7}
+.sitenav .meth{margin-left:auto; color:var(--ink-soft); text-decoration:none}
+.sitenav .meth + .ext{margin-left:0}
+
+/* ---------- findings summary strip ---------- */
+.summary{display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin:-18px 0 0; padding:12px 0 0}
+.summary .lbl{margin-right:2px}
+.summary .chip{display:inline-flex; align-items:baseline; gap:5px; padding:3px 10px; border-radius:2px;
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-decoration:none; border:1px solid transparent}
+.summary .chip b{font-family:var(--f-display); font-size:15px; font-weight:600}
+.summary .s-critical{color:var(--mark); background:var(--mark-soft); border-color:var(--mark)}
+.summary .s-major{color:var(--warn); background:var(--warn-soft); border-color:var(--warn)}
+.summary .s-minor{color:var(--ink-soft); background:var(--surface-2); border-color:var(--rule)}
+.summary .chip:hover{filter:brightness(.96)}
+.summary .total{font-family:var(--f-mono); font-size:11px; color:var(--ink-faint); letter-spacing:.08em}
+.permalink{margin-left:auto; color:var(--ink-faint); text-decoration:none; font-family:var(--f-mono);
+  font-size:14px; opacity:0; transition:opacity .12s}
+.finding:hover .permalink, .permalink:focus{opacity:1}
+.finding:target{outline:2px solid var(--accent); outline-offset:4px}
+@media (prefers-reduced-motion:reduce){.permalink{transition:none}}
+/* ================= site chrome (Pages only) ================= */
+.sitenav{position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:14px;
+  padding:10px 20px; background:color-mix(in srgb, var(--ground) 88%, transparent);
+  backdrop-filter:saturate(150%) blur(8px); border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono); font-size:12px}
+.sitenav .home{color:var(--accent); font-weight:600; text-decoration:none; letter-spacing:.04em}
+.sitenav .crumb{color:var(--ink-faint); letter-spacing:.14em}
+.sitenav .ext{margin-left:auto; color:var(--ink-soft); text-decoration:none}
+.sitenav a:hover{text-decoration:underline}
+.ev-head .src{color:inherit; text-decoration:none; border-bottom:1px dotted var(--ink-faint)}
+.ev-head .src:hover{color:var(--accent); border-bottom-color:var(--accent)}
+.ev-head .expand{margin-left:auto; font-family:var(--f-mono); font-size:10.5px; letter-spacing:.08em;
+  color:var(--ink-soft); background:transparent; border:1px solid var(--rule);
+  border-radius:2px; padding:2px 7px; cursor:pointer}
+.ev-head .expand:hover{color:var(--accent); border-color:var(--accent)}
+.ev-more{border-top:1px solid var(--rule-soft); background:var(--surface); max-height:420px; overflow:auto}
+.ev-more pre{margin:0; padding:12px 14px; font-family:var(--f-mono); font-size:12px; line-height:1.6}
+.ev-more .ln{display:inline-block; width:3.6em; color:var(--ink-faint); user-select:none; text-align:right; padding-right:1em}
+.ev-more mark{background:var(--mark-soft); color:var(--ink); display:inline-block; width:100%}
+.ev-more .err{padding:12px 14px; color:var(--mark); font-family:var(--f-mono); font-size:12px}
+/* filters */
+.filters{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; align-items:center}
+.filters button{font-family:var(--f-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  padding:5px 11px; border:1px solid var(--rule); background:var(--surface); color:var(--ink-soft);
+  border-radius:2px; cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent); color:var(--surface); border-color:var(--accent)}
+.filters .lbl{margin-right:2px}
+.finding[hidden]{display:none!important}
+@media print{.sitenav,.filters,.expand{display:none}}
+
+</style>
+</head>
+<body>
+<nav class="sitenav">
+  <a class="home" href="https://cse.jiun.dev/">CS 커리큘럼 감사</a>
+  <span class="crumb">ITE2039</span>
+  <a class="meth" href="https://cse.jiun.dev/method.html">방법</a>
+  <a class="ext" href="https://github.com/jiunbae/ITE2039" target="_blank" rel="noopener">저장소 &#8599;</a>
+</nav>
 <div class="wrap">
 
   <header class="masthead">
@@ -165,6 +272,8 @@ footer p + p{margin-top:6px}
       <div class="grade"><b>C+</b><span class="lbl">종합</span></div>
     </div>
   </header>
+  <div class="note" style="margin:0 0 28px"><span class="lbl">오프라인 사본</span><p>이 파일은 저장소에 함께 두는 사본이다. 원본은 <a href="https://cse.jiun.dev/reviews/ITE2039.html">cse.jiun.dev</a>에 있고, 그쪽에서는 인용된 줄의 원본 코드를 그 자리에서 펼쳐 볼 수 있다.</p></div>
+  <div class="summary" role="group" aria-label="소견 요약"><span class="lbl">소견</span><a class="chip s-critical" href="#f01"><b>2</b> 치명적</a><a class="chip s-major" href="#f01"><b>5</b> 중대</a><a class="chip s-minor" href="#f01"><b>5</b> 경미</a><span class="total">합계 12</span></div>
 
   <section>
     <h2>총평</h2>
@@ -200,41 +309,35 @@ footer p + p{margin-top:6px}
     <p class="prose">2016-12-07 커밋 하나가 <code>HuffmanCode</code>·<code>LongestCommonSubsequence</code>·<code>MatrixChain</code>·<code>RodCutting</code>·<code>dijkstra</code> 다섯 개를 동시에 추가하고(<code>+327</code>), 완성되어 있던 <code>AssemblyLine.cpp</code>를 삭제한다(<code>-91</code>). 커밋 메시지는 <code>Update dijkstra</code>다. 이 저장소 문제의 절반이 이 한 커밋 안에 있다.</p>
     <div class="stack-lg">
 
-      <article class="finding" data-sev="critical">
-        <header><span class="tier">치명적</span><h3>LCS는 구현되지 않았다. 파일은 하드코딩된 문자열을 출력한다</h3></header>
+      <article class="finding" id="f01" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>LCS는 구현되지 않았다. 파일은 하드코딩된 문자열을 출력한다</h3><a class="permalink" href="#f01" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p>아래가 <code>LongestCommonSubsequence.cpp</code>의 <strong>전문</strong>이다. 5줄이고, DP 테이블도 입력 읽기도 없다. 어떤 입력을 주든 <code>abcde</code>를 출력한다. 실행해서 확인했다: <code>printf "abc\nabd\n" | ./LongestCommonSubsequence</code> → <code>abcde</code>.</p>
           <p>파일명이 과제명이고 내용이 정답처럼 보이는 리터럴이라는 조합은, 좋게 보면 자리만 잡아둔 껍데기이고 나쁘게 보면 하드코딩 제출이다. 어느 쪽이든 저장소에 남아 있는 것은 스텁이며, <code>git log</code>상 이 파일은 추가된 이후 <strong>한 번도 수정되지 않았다</strong>. 같은 학기에 RodCutting과 MatrixChain의 DP를 정확히 짜 놓고 LCS만 비워둔 것이라 실력 문제로 보기도 어렵다.</p>
         </div>
-        <div class="ev">
-          <div class="ev-head"><b>Assignment/LongestCommonSubsequence.cpp</b><span>:1–6 (파일 전문)</span></div>
-          <pre>#include &lt;stdio.h&gt;
+        <div class="ev" data-linked="1"><div class="ev-head"><a class="src" href="https://github.com/jiunbae/ITE2039/blob/HEAD/Assignment/LongestCommonSubsequence.cpp#L1-L6" target="_blank" rel="noopener"><b>Assignment/LongestCommonSubsequence.cpp</b></a><span>:1–6 (파일 전문)</span><button class="expand" type="button" data-repo="ITE2039" data-path="Assignment/LongestCommonSubsequence.cpp" data-start="1" data-end="6">전체 맥락</button></div><pre>#include &lt;stdio.h&gt;
 
 int main(void)
 {
 	<span class="hl">printf("abcde");</span>   <span class="cm">// ← LCS 구현 없음. 입력조차 읽지 않는다</span>
-}</pre>
-        </div>
+}</pre></div>
       </article>
 
-      <article class="finding" data-sev="critical">
-        <header><span class="tier">치명적</span><h3>dijkstra의 우선순위 큐는 거리가 아니라 정점 번호로 정렬된다</h3></header>
+      <article class="finding" id="f02" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>dijkstra의 우선순위 큐는 거리가 아니라 정점 번호로 정렬된다</h3><a class="permalink" href="#f02" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p><code>pair&lt;t_index, t_cost&gt;</code>를 <code>priority_queue</code>에 그대로 넣으면 <code>std::pair</code>의 기본 비교자가 <code>.first</code>를 먼저 본다. <code>.first</code>는 <strong>정점 번호</strong>다. 즉 이 큐는 "가장 가까운 정점"이 아니라 "번호가 가장 큰 정점"을 꺼낸다. <code>:30</code>에서 비용을 음수로 뒤집어 넣는 min-heap 관용구는 <code>.second</code>에만 걸려 있어 동점일 때만 작동하는 장식이다.</p>
           <p>같은 타입으로 독립 실험을 돌려 확인했다. <code>{5,-1}</code>(정점 5, 거리 1)과 <code>{2,-99}</code>(정점 2, 거리 99)를 넣으면 <strong>정점 5가 먼저 나온다</strong> — 거리 순이었다면 순서가 같았겠지만, 정점 2가 더 가까운 경우에도 5가 먼저 나온다는 뜻이다. 그리디 불변식이 없으므로 이것은 Dijkstra가 아니라 label-correcting(Bellman–Ford 계열) 완화 반복이다. 큐가 빌 때까지 완화를 반복하므로 <em>답은 수렴하지만</em>, <code>O((V+E)log V)</code> 보장은 사라지고 정점이 여러 번 재확장된다. 방문 표시도, <code>-now.second &gt; dist[now.first]</code> 같은 낡은 항목 건너뛰기도 없다.</p>
           <p>부수적으로 <code>dist[start]</code>를 <code>0</code>으로 초기화하는 문장이 파일 어디에도 없다(<code>grep</code>으로 확인: <code>dist[]</code>에 쓰는 곳은 <code>:29</code> 하나뿐이다). <code>main</code>이 정점 2부터만 읽기 때문에 가려져 있을 뿐이다.</p>
         </div>
-        <div class="ev">
-          <div class="ev-head"><b>Assignment/dijkstra.cpp</b><span>:18–19, 27–31</span></div>
-          <pre><span class="hl">priority_queue&lt;pair&lt;t_index, t_cost&gt; &gt; pq;</span>  <span class="cm">// ← .first(정점 번호)로 정렬된다</span>
+        <div class="ev" data-linked="1"><div class="ev-head"><a class="src" href="https://github.com/jiunbae/ITE2039/blob/HEAD/Assignment/dijkstra.cpp#L18-L19" target="_blank" rel="noopener"><b>Assignment/dijkstra.cpp</b></a><span>:18–19, 27–31</span><button class="expand" type="button" data-repo="ITE2039" data-path="Assignment/dijkstra.cpp" data-start="18" data-end="19">전체 맥락</button></div><pre><span class="hl">priority_queue&lt;pair&lt;t_index, t_cost&gt; &gt; pq;</span>  <span class="cm">// ← .first(정점 번호)로 정렬된다</span>
 pq.push({ start, 0 });                      <span class="cm">// dist[start]=0 은 어디에도 없음</span>
 ...
 if (dist[next_index] &gt; -now.second + map[now.first][i].second)
 {
     dist[next_index] = -now.second + map[now.first][i].second;
     pq.push({ next_index, <span class="hl">-dist[next_index]</span> });  <span class="cm">// 음수 뒤집기는 .second, 즉 무의미</span>
-}</pre>
-        </div>
+}</pre></div>
         <div class="ev">
           <div class="ev-head"><b>실행 확인</b><span>도달 불가 정점 / 음수 간선</span></div>
           <pre><span class="cm">$ printf "4\n1 1 2 5\n2 1 3 5\n3 0\n4 0\n" | ./dijkstra</span>
@@ -245,21 +348,18 @@ if (dist[next_index] &gt; -now.second + map[now.first][i].second)
         </div>
       </article>
 
-      <article class="finding" data-sev="major">
-        <header><span class="tier">중대</span><h3>Huffman: 예제 입력에서 매번 힙 버퍼 오버플로가 난다</h3></header>
+      <article class="finding" id="f03" data-sev="major">
+        <header><span class="tier">중대</span><h3>Huffman: 예제 입력에서 매번 힙 버퍼 오버플로가 난다</h3><a class="permalink" href="#f03" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p><code>arr</code>은 심볼 하나당 <code>char</code> 1바이트로 <code>input</code>개만 잡아둔 버퍼인데, <code>:176</code>에서 <code>%s</code>로 읽는다. <code>%s</code>는 토큰이 한 글자여도 <strong>널 종료자까지 2바이트</strong>를 쓰므로 매 반복마다 <code>arr[i+1]</code>을 침범하고, 마지막 원소에서는 힙 밖으로 나간다. 이것은 이론적 위험이 아니라 확정적 동작이다. 교과서 예제 입력으로 ASan이 즉시 잡았다.</p>
         </div>
-        <div class="ev">
-          <div class="ev-head"><b>Assignment/HuffmanCode.cpp</b><span>:172–178</span></div>
-          <pre>char *arr = (char *)malloc(sizeof(char)*input);   <span class="cm">// 심볼당 1바이트</span>
+        <div class="ev" data-linked="1"><div class="ev-head"><a class="src" href="https://github.com/jiunbae/ITE2039/blob/HEAD/Assignment/HuffmanCode.cpp#L172-L178" target="_blank" rel="noopener"><b>Assignment/HuffmanCode.cpp</b></a><span>:172–178</span><button class="expand" type="button" data-repo="ITE2039" data-path="Assignment/HuffmanCode.cpp" data-start="172" data-end="178">전체 맥락</button></div><pre>char *arr = (char *)malloc(sizeof(char)*input);   <span class="cm">// 심볼당 1바이트</span>
 int *freq = (int *)malloc(sizeof(int)*input);
 for (int i = 0; i &lt; input; ++i)
 {
    <span class="hl">scanf("%s", &amp;arr[i]);</span>                      <span class="cm">// ← %s 는 널 종료자까지 2바이트를 쓴다. %c 였어야 함</span>
    scanf("%d", &amp;freq[i]);
-}</pre>
-        </div>
+}</pre></div>
         <div class="ev">
           <div class="ev-head"><b>AddressSanitizer</b><span>clang 21, -fsanitize=address</span></div>
           <pre>ERROR: AddressSanitizer: heap-buffer-overflow on address 0x6020000000f6
@@ -271,8 +371,8 @@ SUMMARY: AddressSanitizer: heap-buffer-overflow <span class="hl">HuffmanCode.cpp
         </div>
       </article>
 
-      <article class="finding" data-sev="major">
-        <header><span class="tier">중대</span><h3>Huffman이 비교 대상으로 삼는 고정길이 부호 비트수가 틀렸다</h3></header>
+      <article class="finding" id="f04" data-sev="major">
+        <header><span class="tier">중대</span><h3>Huffman이 비교 대상으로 삼는 고정길이 부호 비트수가 틀렸다</h3><a class="permalink" href="#f04" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p>이 과제의 출력은 두 줄이다. 첫 줄은 고정길이 부호의 총 비트수, 둘째 줄은 허프만 부호의 총 비트수 — 즉 <strong>압축률을 보이는 것이 과제의 요점</strong>이다. 그런데 <code>bitelength</code>는 <code>floor(log2(n))+1</code>을 반환한다. 올바른 값은 <code>ceil(log2(n))</code>이며, 둘은 <code>n</code>이 2의 거듭제곱일 때 정확히 1씩 어긋난다.</p>
           <p>결과적으로 심볼 수가 2·4·8·16개일 때 베이스라인이 부풀려진다. 심볼 4개일 때 고정길이는 심볼당 2비트면 충분한데 3비트로 계산한다. 허프만 쪽 계산(<code>printArr</code>에 누적되는 가중 경로 길이)은 정확하다 — 고전 예제 <code>a5 b9 c12 d13 e16 f45</code>에서 최적값 <code>224</code>를 정확히 냈다. 틀린 것은 비교 대상 쪽이다.</p>
@@ -289,21 +389,18 @@ SUMMARY: AddressSanitizer: heap-buffer-overflow <span class="hl">HuffmanCode.cpp
         </div>
       </article>
 
-      <article class="finding" data-sev="major">
-        <header><span class="tier">중대</span><h3>Huffman은 출처 표기 없는 복사본이고, 그 과정에서 노드마다 메모리를 흘린다</h3></header>
+      <article class="finding" id="f05" data-sev="major">
+        <header><span class="tier">중대</span><h3>Huffman은 출처 표기 없는 복사본이고, 그 과정에서 노드마다 메모리를 흘린다</h3><a class="permalink" href="#f05" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p><code>MinHeapNode</code>/<code>MinHeap</code> 구조체 배치, <code>newNode</code>·<code>createMinHeap</code>·<code>extractMin</code>·<code>buildHuffmanTree</code>·<code>printCodes</code>·<code>HuffmanCodes</code>라는 함수명 조합, 내부 노드 표식 <code>'$'</code>, <code>int arr[100]</code>이라는 상수까지 — 널리 유포된 C 튜토리얼 구현과 식별자 단위로 일치한다. 대문자 <code>Left</code>/<code>Right</code>, <code>is_sizeOne</code> 같은 표기만 손댔다. <strong>출처 주석이 없다.</strong> 같은 커밋의 <code>dijkstra.cpp:5</code>는 자기 저장소 링크를 붙여두었으므로, 출처를 밝히는 습관 자체가 없는 것은 아니다.</p>
           <p>그리고 <code>:105–106</code>에는 원본에 없는 버그가 추가되어 있다. 노드를 <code>malloc</code>한 직후 같은 슬롯을 <code>newNode()</code> 결과로 덮어쓴다. 심볼 하나당 <code>sizeof(MinHeapNode)</code>가 확정적으로 누수된다. 트리·힙·<code>arr</code>·<code>freq</code> 모두 <code>free</code>되지 않는 것은 별개 문제다.</p>
           <p>한편 <code>printArr</code>(<code>:129</code>)은 배열을 출력하지 않고 <code>aFreq += freq*top</code>만 누적하며, <code>printCodes</code>(<code>:133</code>)는 부호를 하나도 출력하지 않는다. <code>:152</code>의 <code>int arr[100]</code>은 채워지기만 하고 읽히지 않는다. 원본의 출력부를 도려내고 이름만 남긴 결과다.</p>
         </div>
-        <div class="ev">
-          <div class="ev-head"><b>Assignment/HuffmanCode.cpp</b><span>:103–107</span></div>
-          <pre>for (int i = 0; i &lt; size; ++i)
+        <div class="ev" data-linked="1"><div class="ev-head"><a class="src" href="https://github.com/jiunbae/ITE2039/blob/HEAD/Assignment/HuffmanCode.cpp#L103-L107" target="_blank" rel="noopener"><b>Assignment/HuffmanCode.cpp</b></a><span>:103–107</span><button class="expand" type="button" data-repo="ITE2039" data-path="Assignment/HuffmanCode.cpp" data-start="103" data-end="107">전체 맥락</button></div><pre>for (int i = 0; i &lt; size; ++i)
 {
    <span class="hl">minHeap-&gt;array[i] = (struct MinHeapNode *)malloc(sizeof(struct MinHeapNode));</span>
    minHeap-&gt;array[i] = newNode(data[i], freq[i]);   <span class="cm">// ← 윗줄 포인터를 덮어씀. 노드마다 누수</span>
-}</pre>
-        </div>
+}</pre></div>
       </article>
 
       <div class="note">
@@ -324,20 +421,17 @@ SUMMARY: AddressSanitizer: heap-buffer-overflow <span class="hl">HuffmanCode.cpp
     <p class="prose">9~10월에 커밋된 7개 파일이다. 여기까지는 매주 한두 개씩 꾸준히 올라왔고, 세 정렬 파일은 <code>input</code>/<code>print</code>/<code>printr</code>/<code>process</code>라는 동일한 뼈대를 공유한다. 이 구간의 코드가 학기 후반보다 오히려 낫다.</p>
     <div class="stack-lg">
 
-      <article class="finding" data-sev="major">
-        <header><span class="tier">중대</span><h3>삽입 정렬이 겹치는 메모리 영역에 memcpy를 쓴다</h3></header>
+      <article class="finding" id="f06" data-sev="major">
+        <header><span class="tier">중대</span><h3>삽입 정렬이 겹치는 메모리 영역에 memcpy를 쓴다</h3><a class="permalink" href="#f06" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p>원소를 한 칸씩 미는 대신 <code>memcpy</code>로 블록 이동하는 영리한 변형인데, 원본 <code>v+i+1</code>과 목적지 <code>v+i</code>가 <code>(j-i)</code>개 구간에서 겹친다. <code>memcpy</code>는 겹치는 영역에 대해 정의되지 않은 동작이며, 여기 필요한 것은 <code>memmove</code>다. 실제로는 대부분의 구현이 앞에서부터 복사해 우연히 맞는 답을 내지만(<code>5 3 9 1 7 2 8 6</code> → <code>9 8 7 6 5 3 2 1</code>, 정상), ASan은 첫 실행에서 바로 잡는다.</p>
         </div>
-        <div class="ev">
-          <div class="ev-head"><b>Assignment/Insertion.cpp</b><span>:31–36</span></div>
-          <pre>k = v[(j=i)];
+        <div class="ev" data-linked="1"><div class="ev-head"><a class="src" href="https://github.com/jiunbae/ITE2039/blob/HEAD/Assignment/Insertion.cpp#L31-L36" target="_blank" rel="noopener"><b>Assignment/Insertion.cpp</b></a><span>:31–36</span><button class="expand" type="button" data-repo="ITE2039" data-path="Assignment/Insertion.cpp" data-start="31" data-end="36">전체 맥락</button></div><pre>k = v[(j=i)];
 while ( ++j &lt; n &amp;&amp; k &gt; v[j] );
 
 if ( --j == i ) continue;
 <span class="hl">memcpy ( v+i, v+i+1, sizeof(*v) * (j-i) );</span>   <span class="cm">// ← 겹침. memmove 였어야 함</span>
-v[j] = k;</pre>
-        </div>
+v[j] = k;</pre></div>
         <div class="ev">
           <div class="ev-head"><b>AddressSanitizer</b><span>입력 n=8</span></div>
           <pre>ERROR: AddressSanitizer: <span class="hl">memcpy-param-overlap</span>: memory ranges
@@ -346,15 +440,13 @@ SUMMARY: AddressSanitizer: memcpy-param-overlap <span class="hl">Insertion.cpp:3
         </div>
       </article>
 
-      <article class="finding" data-sev="major">
-        <header><span class="tier">중대</span><h3>Counting: 접두합 루프가 할당 범위를 한 칸 넘어간다</h3></header>
+      <article class="finding" id="f07" data-sev="major">
+        <header><span class="tier">중대</span><h3>Counting: 접두합 루프가 할당 범위를 한 칸 넘어간다</h3><a class="permalink" href="#f07" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p><code>calloc(++M, ...)</code>는 <code>M</code>을 먼저 증가시키므로 유효 인덱스는 <code>0..M-1</code>이다. 그런데 바로 아래 루프는 <code>i &lt;= M</code>까지 돈다. 이미 증가한 <code>M</code>을 상한으로 다시 쓰면서 한 칸을 초과한다. <code>++M</code>의 부수효과를 같은 변수의 경계값으로 재사용한 전형적인 오프바이원이다.</p>
           <p>덧붙여 <code>:22–23</code>은 <code>scanf</code>의 <strong>반환값</strong>을 도수의 증가분으로 쓴다. 정상 입력에서는 항상 1이라 동작하지만, 입력이 짧거나 형식이 틀리면 증가분이 0 또는 <code>-1</code>(EOF)이 되어 도수가 조용히 줄어든다. <code>:31</code>의 <code>s[--q[i].first]</code>도 <code>A=0</code>인 질의에서 <code>s[-1]</code>을 읽는다(실행 확인: <code>0 2</code> 질의가 종료 없이 <code>2</code>를 출력).</p>
         </div>
-        <div class="ev">
-          <div class="ev-head"><b>Assignment/Counting.cpp</b><span>:13, 22–28</span></div>
-          <pre>int * s = (int*)calloc(<span class="hl">++M</span>, sizeof(int));   <span class="cm">// 유효 인덱스 0..M-1</span>
+        <div class="ev" data-linked="1"><div class="ev-head"><a class="src" href="https://github.com/jiunbae/ITE2039/blob/HEAD/Assignment/Counting.cpp#L13" target="_blank" rel="noopener"><b>Assignment/Counting.cpp</b></a><span>:13, 22–28</span><button class="expand" type="button" data-repo="ITE2039" data-path="Assignment/Counting.cpp" data-start="13" data-end="13">전체 맥락</button></div><pre>int * s = (int*)calloc(<span class="hl">++M</span>, sizeof(int));   <span class="cm">// 유효 인덱스 0..M-1</span>
 ...
 while (N--) {
    int temp = <span class="hl">scanf("%d", &amp;k);</span>              <span class="cm">// ← 반환값을 도수 증가분으로 사용</span>
@@ -362,8 +454,7 @@ while (N--) {
 }
 s[0] = 0;
 for (int i = 1; <span class="hl">i &lt;= M</span>; ++i)                 <span class="cm">// ← i=M 은 할당 범위 밖</span>
-   s[i] += s[i - 1];</pre>
-        </div>
+   s[i] += s[i - 1];</pre></div>
         <div class="ev">
           <div class="ev-head"><b>AddressSanitizer</b><span>N=5 M=5 K=2</span></div>
           <pre>ERROR: AddressSanitizer: heap-buffer-overflow
@@ -372,8 +463,8 @@ allocated by thread T0 here: #1 in main <span class="hl">Counting.cpp:13</span><
         </div>
       </article>
 
-      <article class="finding" data-sev="minor">
-        <header><span class="tier">경미</span><h3>PriorityQueue에 죽은 코드가 네 덩어리 남아 있다</h3></header>
+      <article class="finding" id="f08" data-sev="minor">
+        <header><span class="tier">경미</span><h3>PriorityQueue에 죽은 코드가 네 덩어리 남아 있다</h3><a class="permalink" href="#f08" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p>힙 연산 자체는 정상 동작한다(<code>5,3,9,1</code> 삽입 후 두 번 추출 → <code>9 5</code>, 잔여 <code>3 1</code>). 문제는 그 주변이다.</p>
           <ul>
@@ -386,31 +477,31 @@ allocated by thread T0 here: #1 in main <span class="hl">Counting.cpp:13</span><
         </div>
       </article>
 
-      <article class="finding" data-sev="minor">
-        <header><span class="tier">경미</span><h3>Heapsort의 알고리즘은 정확하지만 k 검증이 없다</h3></header>
+      <article class="finding" id="f09" data-sev="minor">
+        <header><span class="tier">경미</span><h3>Heapsort의 알고리즘은 정확하지만 k 검증이 없다</h3><a class="permalink" href="#f09" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p>sift-down(<code>:37–54</code>)은 <code>l = 2i+1</code>, <code>r = 2i+2</code>, 경계 <code>l &lt; n</code>·<code>r &lt; n</code>까지 CLRS와 동일하고, 힙 구축은 <code>n/2-1</code>부터 내려온다. 중복 값(<code>4 4 4 4 4</code>)에서도 정상이다. 이 저장소에서 자료구조 정확성이 가장 확실한 파일이다.</p>
           <p>다만 <code>main</code>이 <code>k</code>를 검증하지 않아 <code>k &gt; n</code>이면 <code>i &gt;= n-k</code>가 음수까지 내려가 배열 밖을 읽는다. <code>n=3, k=10</code>: <code>9 5 1 0 0 0 0 0 0 0</code> — 뒤의 0 일곱 개가 힙 밖이다. 또 <code>:17</code>의 <code>if (*first - *second)</code>는 뺄셈 결과의 참/거짓으로 같음을 판정하므로 <code>INT_MIN</code> 근처에서 오버플로한다. <code>*first != *second</code>면 충분하다.</p>
         </div>
       </article>
 
-      <article class="finding" data-sev="minor">
-        <header><span class="tier">경미</span><h3>Selection은 m회만 정렬하고 n개를 전부 출력한다</h3></header>
+      <article class="finding" id="f10" data-sev="minor">
+        <header><span class="tier">경미</span><h3>Selection은 m회만 정렬하고 n개를 전부 출력한다</h3><a class="permalink" href="#f10" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p><code>:31</code>의 바깥 루프가 <code>i &lt; m</code>이므로 앞 <code>m</code>개만 확정되는 부분 선택 정렬인데, <code>:22</code>는 <code>print(v)</code>로 배열 전체를 찍는다. <code>n=8, m=3</code>: <code>1 2 3 5 7 9 8 6</code> — 앞 3개는 정렬, 뒤 5개는 중간 상태다. 과제가 "가장 작은 m개"를 요구했다면 출력 범위를 <code>m</code>으로 잘랐어야 한다.</p>
           <p><code>:39</code>의 <code>v[k] ^= v[i] ^= v[k] ^= v[i];</code>는 같은 객체를 한 표현식에서 세 번 수정한다. C++17 이전 규칙에서는 정의되지 않은 동작이지만, 정직하게 적자면 <strong>clang 21에 <code>-std=c++14 -Wall -Wextra -Wunsequenced -Wsequence-point</code>를 줘도 아무 경고가 나오지 않았고</strong>, 실행 결과도 정상이었다. 안전성 문제라기보다 읽히지 않는 코드 문제다.</p>
         </div>
       </article>
 
-      <article class="finding" data-sev="minor">
-        <header><span class="tier">경미</span><h3>FindingSameKeys는 값 범위 100001을 하드코딩하고 검사하지 않는다</h3></header>
+      <article class="finding" id="f11" data-sev="minor">
+        <header><span class="tier">경미</span><h3>FindingSameKeys는 값 범위 100001을 하드코딩하고 검사하지 않는다</h3><a class="permalink" href="#f11" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p><code>:9</code>의 <code>vector&lt;bool&gt; v(100001, false)</code>는 문제에서 준 제약을 그대로 박아 넣은 것으로, <code>:13</code>·<code>:18</code>에서 <code>t</code>가 그 범위 안인지 확인하지 않는다. 해시 없이 직접 주소 지정으로 푼 선택 자체는 <code>O(n+k)</code>로 타당하지만, 키 공간이 커지는 순간 무너진다. 또 <code>:10</code>·<code>:15</code>의 <code>while(--n + 1)</code>은 <code>while(n-- &gt; 0)</code>과 같은 뜻을 일부러 읽기 어렵게 쓴 것이다. 두 집합의 교집합 크기 계산 자체는 맞다(<code>{1..5}</code> ∩ <code>{3,4,5,9}</code> → <code>3</code>).</p>
         </div>
       </article>
 
-      <article class="finding" data-sev="minor">
-        <header><span class="tier">경미</span><h3>Merge는 보조 배열을 표준 아닌 VLA로 스택에 잡는다</h3></header>
+      <article class="finding" id="f12" data-sev="minor">
+        <header><span class="tier">경미</span><h3>Merge는 보조 배열을 표준 아닌 VLA로 스택에 잡는다</h3><a class="permalink" href="#f12" aria-label="이 소견으로 가는 링크">#</a></header>
         <div class="prose">
           <p>병합 로직 자체는 <code>L[i] &lt;= R[j]</code>로 안정성까지 지킨 교과서 구현이다. 다만 <code>:28</code>의 <code>int L[n1], R[n2];</code>는 C++ 표준에 없는 가변 길이 배열로, clang이 <code>-Wvla-cxx-extension</code>으로 경고한다. 최상위 호출에서 <code>n/2</code>개를 스택에 잡으므로 입력이 커지면 힙이 아니라 스택이 먼저 터진다. MSVC에서는 아예 컴파일되지 않는다.</p>
         </div>
@@ -444,6 +535,112 @@ allocated by thread T0 here: #1 in main <span class="hl">Counting.cpp:13</span><
   <footer>
     <p>평가 대상: <code>github.com/jiunbae/ITE2039</code> · 추적 파일 13개 · 커밋 12개 · 코드 커밋 기간 2016-09-09 ~ 2016-12-07 · 마지막 푸시 2021-08-09(사용자명 변경, 코드 변경 없음) · 브랜치는 <code>master</code> 단독이며 원격에도 다른 브랜치가 없어 숨은 구현은 없다.</p>
     <p>검증 방식: <code>Assignment/</code>의 <code>.cpp</code> 12개 전문 정독. <code>Apple clang 21.0.0</code>으로 <code>-std=c++14 -Wall -Wextra</code> 전체 컴파일 — <strong>12개 모두 에러 없이 빌드됨</strong>, 경고는 17건(<code>-Wsign-compare</code> 4, <code>-Wunused-parameter</code> 8, <code>-Wunknown-pragmas</code> 2, <code>-Wvla-cxx-extension</code> 2, <code>-Wpragma-once-outside-header</code> 1). 12개 전부를 소규모 입력으로 실행해 출력을 확인했고, MatrixChain(<code>15125</code>)·RodCutting(<code>22</code>, 절단 <code>2 6</code>)·Huffman(<code>224</code>)은 CLRS 예제 정답과 대조했다. <code>Counting</code>·<code>HuffmanCode</code>·<code>Insertion</code>·<code>Selection</code>은 <code>-fsanitize=address</code>로 재빌드해 앞의 셋에서 오류를 재현했다. <code>dijkstra</code>의 큐 정렬 순서는 동일한 타입의 독립 프로그램으로 따로 확인했다. 삭제된 <code>AssemblyLine.cpp</code>는 <code>git show 6aade28</code>로 복원해 읽었다. 저장소 파일은 수정하지 않았다.</p>
+  
+  <details class="prompt">
+    <summary>이 보고서를 만든 프롬프트</summary>
+    <div class="prompt-body">
+      <p>저장소마다 리뷰어 한 명이 아래 지시로 독립 조사했다. 공통 지침은 <a href="https://cse.jiun.dev/method.html">방법론</a>에 전문이 있다.</p>
+      <pre class="code">주의: 이 레포는 작다(추적 파일 14개). 분량을 억지로 채우지 마라. 각 파일이 교과서 정의대로 맞는지(Heapsort sift-down 경계, Huffman tie-breaking, dijkstra 방문 처리, DP 점화식과 오프바이원), 자료구조 직접 구현인지 STL 위임인지, 복잡도가 이름값을 하는지. g++ -Wall -Wextra로 전부 컴파일하고 작은 입력으로 실행해 정확성을 확인하라. &#x27;과제&#x27;가 아니라 &#x27;수업 따라치기 연습 기록&#x27;이라면 그렇게 정직하게 판정하라.</pre>
+    </div>
+  </details>
   </footer>
 
 </div>
+<script>
+(function(){
+  "use strict";
+  // ---- 1. expandable source from raw.githubusercontent ----
+  document.addEventListener("click", async function(e){
+    var b = e.target.closest(".expand"); if(!b) return;
+    var ev = b.closest(".ev"); var open = ev.querySelector(".ev-more");
+    if(open){ open.remove(); b.textContent="전체 맥락"; return; }
+    b.textContent="불러오는 중…"; b.disabled = true;
+    var repo=b.dataset.repo, path=b.dataset.path,
+        s=parseInt(b.dataset.start,10), t=parseInt(b.dataset.end,10)||s;
+    var box=document.createElement("div"); box.className="ev-more";
+    try{
+      var url="https://raw.githubusercontent.com/jiunbae/"+repo+"/HEAD/"+path
+              .split("/").map(encodeURIComponent).join("/");
+      var res=await fetch(url); if(!res.ok) throw new Error("HTTP "+res.status);
+      var lines=(await res.text()).split("\n");
+      var from=Math.max(1,s-15), to=Math.min(lines.length,t+15);
+      var pre=document.createElement("pre");
+      for(var i=from;i<=to;i++){
+        var row=document.createElement(i>=s&&i<=t?"mark":"span");
+        var n=document.createElement("span"); n.className="ln"; n.textContent=i;
+        row.appendChild(n); row.appendChild(document.createTextNode(lines[i-1]+"\n"));
+        pre.appendChild(row);
+      }
+      box.appendChild(pre);
+    }catch(err){
+      var d=document.createElement("div"); d.className="err";
+      d.textContent="원본을 불러오지 못했습니다 ("+err.message+"). 위 파일명을 눌러 GitHub에서 확인하세요.";
+      box.appendChild(d);
+    }
+    ev.appendChild(box); b.textContent="접기"; b.disabled=false;
+  });
+
+  // ---- 2. severity filter on report pages ----
+  var findings = document.querySelectorAll(".finding[data-sev]");
+  if(findings.length > 2){
+    var counts={critical:0,major:0,minor:0};
+    findings.forEach(function(f){ var k=f.dataset.sev; if(k in counts) counts[k]++; });
+    var host = document.querySelector("section");
+    if(host){
+      var bar=document.createElement("div"); bar.className="filters";
+      bar.innerHTML='<span class="lbl">심각도</span>';
+      [["all","전체",findings.length],["critical","치명적",counts.critical],
+       ["major","중대",counts.major],["minor","경미",counts.minor]].forEach(function(o){
+        if(o[0]!=="all" && !o[2]) return;
+        var btn=document.createElement("button");
+        btn.type="button"; btn.dataset.sev=o[0];
+        btn.setAttribute("aria-pressed", o[0]==="all");
+        btn.textContent=o[1]+" "+o[2];
+        bar.appendChild(btn);
+      });
+      host.parentNode.insertBefore(bar, host);
+      bar.addEventListener("click", function(e){
+        var b=e.target.closest("button"); if(!b) return;
+        bar.querySelectorAll("button").forEach(function(x){
+          x.setAttribute("aria-pressed", x===b); });
+        var want=b.dataset.sev;
+        findings.forEach(function(f){
+          f.hidden = (want!=="all" && f.dataset.sev!==want); });
+      });
+    }
+  }
+
+  // ---- 3. index: grade / year filter ----
+  var rows=document.querySelectorAll(".row");
+  if(rows.length>4 && document.querySelector(".yr")){
+    var grades=[...new Set([...rows].map(function(r){
+      var g=r.querySelector(".rg"); return g?g.textContent.trim():""; }))].filter(Boolean).sort();
+    var sec=document.querySelector(".yr").parentNode;
+    var bar=document.createElement("div"); bar.className="filters";
+    bar.innerHTML='<span class="lbl">등급</span>';
+    [["all","전체"]].concat(grades.map(function(g){return [g,g];})).forEach(function(o){
+      var b=document.createElement("button"); b.type="button"; b.dataset.g=o[0];
+      b.setAttribute("aria-pressed", o[0]==="all"); b.textContent=o[1];
+      bar.appendChild(b);
+    });
+    sec.insertBefore(bar, document.querySelector(".yr"));
+    bar.addEventListener("click", function(e){
+      var b=e.target.closest("button"); if(!b) return;
+      bar.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x===b); });
+      var want=b.dataset.g;
+      rows.forEach(function(r){
+        var g=r.querySelector(".rg"); var m = want==="all" || (g && g.textContent.trim()===want);
+        r.style.display = m ? "" : "none";
+      });
+      document.querySelectorAll(".yr").forEach(function(y){
+        var n=0, el=y.nextElementSibling;
+        while(el && el.classList.contains("row")){ if(el.style.display!=="none") n++; el=el.nextElementSibling; }
+        y.style.display = n ? "" : "none";
+      });
+    });
+  }
+})();
+
+</script>
+</body>
+</html>
